@@ -1,15 +1,27 @@
 import express from 'express';
+import mongoose from "mongoose";
+
 import userRouter from './routes/user.route';
 
 const app = express();
 
+const connectionString = "mongodb+srv://Quiz-App-REST-API:Quiz-App-REST-API@cluster0.1gpc1be.mongodb.net/workshop?retryWrites=true&w=majority";
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send("connected")
+  res.send("Home Route")
 })
 
-// Redirect to /user to user.route
-app.use('/user', userRouter)
+// Redirect /user to userRouter
+app.use('/user', userRouter);
 
-app.listen(3000);
+mongoose.connect(connectionString)
+  .then(() => {
+    app.listen(3000, () => {
+      console.log("Server Connected")
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
