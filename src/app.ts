@@ -5,7 +5,7 @@ import userRouter from './routes/user.route';
 
 const app = express();
 
-const connectionString = "mongodb+srv://Quiz-App-REST-API:Quiz-App-REST-API@cluster0.1gpc1be.mongodb.net/workshop?retryWrites=true&w=majority";
+const connectionString = "mongodb+srv://Quiz-App-REST-API:Quiz-App-REST-API@cluster0.1gpc1be.mongodb.net/quizdb?retryWrites=true&w=majority";
 
 app.use(express.json());
 

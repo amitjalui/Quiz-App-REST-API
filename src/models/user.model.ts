@@ -1,4 +1,4 @@
-import mongoose, {Schema, model} from "mongoose";
+import {Schema, model} from "mongoose";
 
 // Schema
 const userSchema = new Schema(
@@ -18,9 +18,7 @@ const userSchema = new Schema(
       required: true
     }
   },
-  {
-    timestamps: true
-  }
+  {timestamps: true}
 );
 
 // Model
