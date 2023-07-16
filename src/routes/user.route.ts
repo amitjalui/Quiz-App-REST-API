@@ -10,6 +10,6 @@ userRouter.get('/:userId', getUser);
 userRouter.post('/', registerUser);
 
 // PUT /user/:userId
-userRouter.put('/:userId', updateUser);
+userRouter.put('/', updateUser);
 
 export default userRouter;

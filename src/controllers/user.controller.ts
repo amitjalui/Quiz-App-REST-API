@@ -27,6 +27,7 @@ const registerUser = async (req: Request, res: Response) => {
 }
 
 const getUser = async(req: Request, res:  Response) => {
+  console.log('change')
   try {
     const userId = req.params.userId;
 
@@ -51,6 +52,21 @@ const getUser = async(req: Request, res:  Response) => {
 }
 
 const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body._id;
+    const user = await User.findById(userId);
+
+    if (user) {
+      user.name = req.body.name;
+      await user.save();
+      reqRes = {status: "success", message: "User updated", data: {}};
+      return res.send(reqRes);
+    }
+    
+  } catch (error) {
+    reqRes = {status: "error", message: "Something went wrong", data: {}};
+    return res.status(500).send(reqRes);
+  }
 
 }
 

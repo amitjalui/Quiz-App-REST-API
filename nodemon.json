@@ -1,0 +1,9 @@
+{
+  "env": {
+    "CONNECTION_STRING": "mongodb+srv://Quiz-App-REST-API:Quiz-App-REST-API@cluster0.1gpc1be.mongodb.net/quizdb?retryWrites=true&w=majority",
+    "PORT": 4000
+  },
+  "watch": ["src"],
+  "ext": "ts, json",
+  "exec": "ts-node ./src/app.ts"
+}

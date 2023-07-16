@@ -1,0 +1,4 @@
+ts-node: automatic apply the ts build 
+
+nodemon "watch" can be set as per our requirement
+e.g: "watch": ["src"]
