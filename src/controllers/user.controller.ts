@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user.model';
+import bcrypt from 'bcryptjs';
 
 interface ReturnreqResonse {
   status: "success" | "error",
@@ -11,7 +12,10 @@ let reqRes: ReturnreqResonse;
 
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const user = await new User(req.body).save();
+    const {email, name} = req.body;
+    const password = await bcrypt.hash(req.body.password, 12);
+    
+    const user = await new User({email, name, password}).save();
 
     if (!user) {
       reqRes = { status: "error", message: "No result found", data: {} };
@@ -27,7 +31,6 @@ const registerUser = async (req: Request, res: Response) => {
 }
 
 const getUser = async(req: Request, res:  Response) => {
-  console.log('change')
   try {
     const userId = req.params.userId;
 
