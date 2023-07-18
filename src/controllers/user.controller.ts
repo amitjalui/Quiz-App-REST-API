@@ -30,6 +30,37 @@ const registerUser = async (req: Request, res: Response) => {
   }
 }
 
+const loginUser = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const password = req.body.password;
+
+    // find user with email
+    const user = await User.findOne({email});
+
+    if (!user) {
+      reqRes = { status: "error", message: "No user exist", data: {} };
+      res.status(401).send(reqRes);
+    } else {
+      // verify password
+      // .compare(string, hash)
+      const comparePassword = await bcrypt.compare(password, user.password);
+      
+      // then decide
+      if (comparePassword) {
+        reqRes = { status: "success", message: "Logged in", data: {} };
+        return res.status(200).send(reqRes);
+      } else {
+        reqRes = { status: "error", message: "Invalid Credentials", data: {} };
+        return res.status(401).send(reqRes);
+      }
+    }
+  } catch (error) {
+    reqRes = {status: "error", message: "Something went wrong", data: {}};
+    return res.status(500).send(reqRes);
+  }
+}
+
 const getUser = async(req: Request, res:  Response) => {
   try {
     const userId = req.params.userId;
@@ -73,4 +104,4 @@ const updateUser = async (req: Request, res: Response) => {
 
 }
 
-export { registerUser, getUser, updateUser };
+export { registerUser, getUser, updateUser, loginUser };
