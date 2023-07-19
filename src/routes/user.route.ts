@@ -1,19 +1,16 @@
 import express from 'express';
-import { registerUser, getUser, updateUser, loginUser } from '../controllers/user.controller';
+import { getUser, updateUser } from '../controllers/user.controller';
 
 const userRouter = express.Router();
 
+// User should be authenticate
+// User should be authorize
 // GET /user/:userId
 userRouter.get('/:userId', getUser);
 
-// POST /user/
-userRouter.post('/', registerUser);
-
-// POST /user/login
-userRouter.post('/login', loginUser)
-
-// PUT /user/:userId
+// User should be authenticate
+// User should be authorize
+// PUT /user/
 userRouter.put('/', updateUser);
-
 
 export default userRouter;
