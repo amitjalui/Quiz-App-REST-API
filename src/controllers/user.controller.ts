@@ -12,6 +12,11 @@ const getUser = async(req: Request, res:  Response) => {
   try {
     const userId = req.params.userId;
 
+    if (req.userId !== userId) {
+      const err = new Error("User not allowed");
+      throw err;
+    }
+
     /*
       @MongoDB_Projection 
       * Allows which data needed to be show and which not
@@ -35,6 +40,12 @@ const getUser = async(req: Request, res:  Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const userId = req.body._id;
+
+    if (req.userId !== userId) {
+      const err = new Error("You are not authorized!");
+      throw err;
+    }
+    
     const user = await User.findById(userId);
 
     if (user) {

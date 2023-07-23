@@ -14,6 +14,15 @@ const connectionString = process.env.CONNECTION_STRING || '';
 
 app.use(express.json());
 
+// customizing Request interface in Express. 
+declare global {
+  namespace Express {
+    interface Request {
+      userId: String;
+    }
+  }
+}
+
 app.get('/', (req, res) => {
   res.send("Home Route")
 })
