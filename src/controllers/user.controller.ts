@@ -8,7 +8,7 @@ interface ReturnreqResonse {
 
 let reqRes: ReturnreqResonse;
 
-const getUser = async(req: Request, res:  Response) => {
+const getUser = async(req: Request, res:  Response, next: NextFunction) => {
   try {
     const userId = req.params.userId;
 
@@ -32,12 +32,11 @@ const getUser = async(req: Request, res:  Response) => {
       return res.send(reqRes);
     }
   } catch (error) {
-    reqRes = {status: "error", message: "Something went wrong", data: {}};
-    return res.status(500).send(reqRes);
+    next(error);
   }
 }
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.body._id;
 
@@ -56,8 +55,7 @@ const updateUser = async (req: Request, res: Response) => {
     }
     
   } catch (error) {
-    reqRes = {status: "error", message: "Something went wrong", data: {}};
-    return res.status(500).send(reqRes);
+    next(error);
   }
 
 }

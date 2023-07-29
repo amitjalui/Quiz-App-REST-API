@@ -11,7 +11,7 @@ interface ReturnreqResonse {
 
 let reqRes: ReturnreqResonse;
 
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {email, name} = req.body;
     const password = await bcrypt.hash(req.body.password, 12);
@@ -34,12 +34,11 @@ const registerUser = async (req: Request, res: Response) => {
     }
     
   } catch (error) {
-    reqRes = {status: "error", message: "Something went wrong", data: {}};
-    return res.status(500).send(reqRes);
+    next(error);
   }
 }
 
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email } = req.body;
     const password = req.body.password;
@@ -67,8 +66,7 @@ const loginUser = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    reqRes = {status: "error", message: "Something went wrong", data: {}};
-    return res.status(500).send(reqRes);
+    next(error);
   }
 }
 

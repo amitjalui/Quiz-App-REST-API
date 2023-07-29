@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import mongoose from "mongoose";
 
 import userRouter from './routes/user.route';
@@ -32,6 +32,14 @@ app.use('/user', userRouter);
 
 // Redirect /auth to userRouter
 app.use('/auth', authRouter);
+
+// Error
+  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    // logger for err
+    console.log(err);
+    
+    res.send("Something went wrong please try after sometimes!");
+  });
 
 mongoose.connect(connectionString)
   .then(() => {
