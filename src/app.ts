@@ -3,6 +3,13 @@ import mongoose from "mongoose";
 
 import userRouter from './routes/user.route';
 import authRouter from './routes/auth.route';
+import ProjectError from './helper/error';
+
+interface ReturnreqResonse {
+  status: "success" | "error",
+  message: String,
+  data: {}
+}
 
 const app = express();
 
@@ -34,12 +41,27 @@ app.use('/user', userRouter);
 app.use('/auth', authRouter);
 
 // Error
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    // logger for err
-    console.log(err);
-    
-    res.send("Something went wrong please try after sometimes!");
-  });
+app.use((err: ProjectError, req: Request, res: Response, next: NextFunction) => {
+  let message:String;
+  let statusCode:number;
+
+  if (!!err.statusCode && err.statusCode < 500) {
+    message = err.message;
+    statusCode = err.statusCode;
+  } else {
+    message = "Something went wrong please try after sometimes!";
+    statusCode = 500;
+  }
+  
+  let reqRes: ReturnreqResonse = {status: "error", message, data:{}};
+  
+  if (!!err.data) {
+    reqRes.data = err.data;
+  }    
+  
+  console.log(err.statusCode, err.message);
+  res.status(statusCode).send(reqRes);
+});
 
 mongoose.connect(connectionString)
   .then(() => {

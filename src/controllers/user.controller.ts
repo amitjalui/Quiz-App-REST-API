@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user.model';
+import ProjectError from '../helper/error';
+
 interface ReturnreqResonse {
   status: "success" | "error",
   message: String,
@@ -13,7 +15,8 @@ const getUser = async(req: Request, res:  Response, next: NextFunction) => {
     const userId = req.params.userId;
 
     if (req.userId !== userId) {
-      const err = new Error("User not allowed");
+      const err = new ProjectError("User not allowed");
+      err.statusCode = 401;
       throw err;
     }
 
@@ -41,7 +44,8 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.body._id;
 
     if (req.userId !== userId) {
-      const err = new Error("You are not authorized!");
+      const err = new ProjectError("You are not authorized!");
+      err.statusCode = 401;
       throw err;
     }
     
