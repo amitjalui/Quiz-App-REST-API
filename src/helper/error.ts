@@ -1,6 +1,6 @@
 export default class ProjectError extends Error {
   private _status:number = 0;
-  private _data:Object = {};
+  private _data:Object | [] = {};
 
   // Status Code
   get statusCode():number {

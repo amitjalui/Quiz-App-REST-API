@@ -2,11 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/user.model';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import ProjectError from '../helper/error';
 
 interface ReturnreqResonse {
   status: "success" | "error",
   message: String,
-  data: {}
+  data: {} | []
 }
 
 let reqRes: ReturnreqResonse;
@@ -47,8 +48,9 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findOne({email});
 
     if (!user) {
-      reqRes = { status: "error", message: "No user exist", data: {} };
-      res.status(401).send(reqRes);
+      const err = new ProjectError("No user exist");
+      err.statusCode = 401;
+      throw err;
     } else {
       // verify password
       // .compare(string, hash)
@@ -61,8 +63,9 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         reqRes = { status: "success", message: "Logged in", data: {token} };
         return res.status(200).send(reqRes);
       } else {
-        reqRes = { status: "error", message: "Invalid Credentials", data: {} };
-        return res.status(401).send(reqRes);
+        const err = new ProjectError("Invalid Credentials");
+        err.statusCode = 401;
+        throw err;
       }
     }
   } catch (error) {

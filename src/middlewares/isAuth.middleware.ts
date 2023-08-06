@@ -1,14 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import ProjectError from "../helper/error";
 
 const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const err = new Error("Not authenticated");
-
     // Header
     const authHeader = req.get("Authorization");
 
     if (!authHeader) {
+      const err = new ProjectError("Not authenticated");  
+      err.statusCode = 401;
       throw err;
     }
 
@@ -19,16 +20,20 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     try {
       decodeToken = <any> jwt.verify(token, "mytemporarysecretkey");
     } catch (error) {
+      const err = new ProjectError("Not authenticated");  
+      err.statusCode = 401;
       throw err;
     }
 
     if (!decodeToken) {
+      const err = new ProjectError("Not authenticated");  
+      err.statusCode = 401;
       throw err;
     }
 
-    // Pass to next method
     req.userId = decodeToken.userId
-
+    
+    // Pass to next method
     next();
     
   } catch (error) {

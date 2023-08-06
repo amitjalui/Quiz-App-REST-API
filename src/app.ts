@@ -8,7 +8,7 @@ import ProjectError from './helper/error';
 interface ReturnreqResonse {
   status: "success" | "error",
   message: String,
-  data: {}
+  data: {} | []
 }
 
 const app = express();
